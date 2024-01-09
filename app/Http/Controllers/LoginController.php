@@ -180,5 +180,34 @@ class loginController extends Controller
 
 
         }
+        public function forgotPassword(){
+
+            if($this->request->isMethod('POST')){
+                $email = $this->request->input('email-send');
+                $user = DB::table('users')->where('email',$email)->first();
+
+
+            if ($user) {
+                $full_name= $user->name;
+                $activation_token= md5(uniqid()) . $email . sha1($email);
+
+                $emailrestpwd = new Emailservice;
+                $subject = "Reset Your Password";
+
+                $emailrestpwd ->resetPassword($subject, $email, $full_name, true,$activation_token);
+
+
+
+            } else {
+                return back()->withErrors(['email-error'=>'This email is not exist , Pleas enter an email Already Registred !'])
+                ->with('danger','This email is not exist , Pleas enter an email Already Registred !');
+            }
+
+            }
+
+
+
+            return view('auth.forgot_password');
+        }
 
 }
