@@ -445,7 +445,7 @@
             <tr>
               <td class="email-masthead">
                 <a href="https://example.com" class="f-fallback email-masthead_name">
-                [Product Name]
+
               </a>
               </td>
             </tr>
@@ -458,7 +458,7 @@
                     <td class="content-cell">
                       <div class="f-fallback">
                         <h1>Hi {{$name}},</h1>
-                        <p>You recently requested to reset your password for your [Product Name] account. Use the button below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
+                        <p>You recently requested to reset your password for your account. Use the button below to reset it. <strong>This password reset is only valid for the next 24 hours.</strong></p>
                         <!-- Action -->
                         <table class="body-action align-center"  width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
@@ -468,22 +468,22 @@
                               <table width="100%"  cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td class="align-center" >
-                                    <a href="{{action_url}}" class="f-fallback button button--green" target="_blank">Reset your password</a>
+                                    <a href="{{route('app_change_password',['token'=>$activation_token])}}" class="f-fallback button button--green" target="_blank">Reset your password</a>
                                   </td>
                                 </tr>
                               </table>
                             </td>
                           </tr>
                         </table>
-                        <p>For security, this request was received from a {{operating_system}} device using {{browser_name}}. If you did not request a password reset, please ignore this email or <a href="{{support_url}}">contact support</a> if you have questions.</p>
+                        <p>For security, this request was received from a  device using . If you did not request a password reset, please ignore this email or <a href="">contact support</a> if you have questions.</p>
                         <p>Thanks,
-                          <br>The [Product Name] team</p>
+                          <br>The  team</p>
                         <!-- Sub copy -->
                         <table class="body-sub" role="presentation">
                           <tr>
                             <td>
-                              <p class="f-fallback sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                              <p class="f-fallback sub">{{action_url}}</p>
+                              <p class="f-fallback sub">If youre having trouble with the button above, copy and paste the URL below into your web browser.</p>
+                              <p class="f-fallback sub"></p>
                             </td>
                           </tr>
                         </table>
@@ -499,7 +499,7 @@
                   <tr>
                     <td class="content-cell align-center">
                       <p class="f-fallback sub align-center">
-                        [Company Name, LLC]
+
                         <br>1234 Street Rd.
                         <br>Suite 1234
                       </p>

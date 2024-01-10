@@ -7,6 +7,7 @@ use App\Services\EmailService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -196,6 +197,15 @@ class loginController extends Controller
 
                 $emailrestpwd ->resetPassword($subject, $email, $full_name, true,$activation_token);
 
+                DB::table('users')
+                ->where('email',$email)
+                ->update(['activation_token'=>$activation_token]);
+
+
+                return back()->withErrors(['email-success'=>'We have send request to reset your email please check your mail-box.'])
+                ->with('success','We have send request to reset your email please check your mail-box.');
+
+
 
 
             } else {
@@ -208,6 +218,65 @@ class loginController extends Controller
 
 
             return view('auth.forgot_password');
+        }
+
+        public function changePassword($token){
+
+            if($this->request->isMethod('POST')){
+
+                $new_password = $this->request->input('new-password');
+                $new_password_confirm = $this->request->input('new-password-confirm');
+                $passwordLenght = strlen($new_password);
+
+                if($passwordLenght >= 8){
+
+                    if ($new_password == $new_password_confirm) {
+
+                        $user = DB::table('users')->where('activation_token',$token)->first();
+
+                        if($user){
+
+                            $id_user = $user->id;
+
+                            DB::table('users')
+                            ->where('id',$id_user )
+                            ->update([
+
+                                'password'=>Hash::make($new_password),
+                                'updated_at'=>new \DateTimeImmutable,
+                                'activation_token'=>'',
+
+                            ]);
+
+                            return redirect()->route('login')->with('success','New Password saved SUCCESFULEY');
+
+
+                        }else{
+
+                            return back()->with('danger','This Token daednt mutch any User !');
+                        }
+
+
+                    } else {
+
+                        return back()->withErrors(['password-error-confirm'=>'  Please write The Same Password'])
+                        ->with('danger','The new Password and Password confirmation is not the some  !  Please write The Same Password');
+
+                    }
+
+
+
+                }else{
+                    return back()->withErrors(['password-error'=>'This Lenght password is very small  !'])
+                    ->with('danger','This Lenght password is very small  !');
+
+                }
+
+            }
+            return view('auth.change_password',[
+                'activation_token'=>$token
+            ]);
+
         }
 
 }
